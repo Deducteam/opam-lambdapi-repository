@@ -46,3 +46,5 @@ opam uninstall $libname
 [Example of Github action workflow](https://github.com/fblanqui/lib/blob/master/.github/workflows/main.yml) to automatically check the versions of Lambdapi with which your library compiles.
 
 [Example of opam file](https://github.com/Deducteam/opam-lambdapi-repository/blob/master/packages/lambdapi-blanqui-lib/lambdapi-blanqui-lib.0.0.0/opam) to include a new library in this repository.
+
+[Script to generate the Opam metadata of your library](https://github.com/Deducteam/opam-lambdapi-repository/blob/master/opam-data.sh)
