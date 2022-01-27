@@ -1,9 +1,9 @@
 opam-version: "2.0"
-synopsis: "Standard library for Lambdapi"
+synopsis: "Library on natural numbers and polymorphic lists"
 description: """
 This package provides a Lambdapi library on natural numbers
 and polymorphic lists (in intuitionistic first-order logic).
-It provides the following modules:
+It provides the following modules (to be prefixed by Blanqui.Lib.):
 - Set: type of set codes
 - Prop: definition of propositional logic
 - Eq: definition of Leibniz equality
