@@ -21,8 +21,8 @@ bug-reports: "https://github.com/fblanqui/lib/issues"
 depends: [
   "lambdapi" {>= "2.0.0"}
 ]
-install: [ make "install" ]
-remove: [ make "uninstall" ]
+install: [ make install ]
+remove: [ make uninstall ]
 dev-repo: "git+https://github.com/fblanqui/lib.git"
 url {
   src:
