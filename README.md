@@ -1,5 +1,5 @@
-Opam repository of Lambdapi developments
-========================================
+Opam repository of Lambdapi libraries
+=====================================
 
 Requires [Opam](https://opam.ocaml.org/).
 
@@ -18,11 +18,11 @@ opam search lambdapi
 To install a Lambdapi library, do:
 
 ```bash
-opam install <library_name>
+opam install $library_name
 ```
 
 To uninstall a Lambdapi library, do:
 
 ```bash
-opam uninstall <library_name>
+opam uninstall $library_name
 ```
