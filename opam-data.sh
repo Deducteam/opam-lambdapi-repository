@@ -5,7 +5,7 @@ progname=`basename $0`
 usage() {
     cat <<EOF
 usage: $progname <url>
-generates on stdout opam data for from the file <url> 
+generates on stdout opam data from the file <url> 
 EOF
 }
 
