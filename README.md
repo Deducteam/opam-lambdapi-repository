@@ -1,4 +1,4 @@
-Opam repository of Lambdapi libraries
+Opam repository of [Lambdapi](https://github.com/Deducteam/lambdapi) libraries
 =====================================
 
 Requires [Opam](https://opam.ocaml.org/).
