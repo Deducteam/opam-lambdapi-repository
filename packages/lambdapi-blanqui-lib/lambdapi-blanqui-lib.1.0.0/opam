@@ -11,7 +11,6 @@ It provides the following modules:
 - Bool: booleans
 - Nat: natural numbers
 - List: polymorphic lists
-- Z: integers
 """
 maintainer: ["frederic.blanqui@inria.fr"]
 authors: ["Frédéric Blanqui" "Quentin Buzet" "Quentin Garchery"]
