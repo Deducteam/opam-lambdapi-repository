@@ -1,0 +1,34 @@
+opam-version: "2.0"
+synopsis: "Basic library on natural numbers, integers and polymorphic lists"
+description: """
+This package provides a Lambdapi library on natural numbers,
+integers and polymorphic lists (in intuitionistic first-order logic).
+It provides the following modules:
+- Set: type of set codes
+- Prop: propositional logic
+- Eq: Leibniz equality
+- FOL: first-order logic
+- Bool: booleans
+- Nat: natural numbers
+- List: polymorphic lists
+- Z: integers
+"""
+maintainer: ["frederic.blanqui@inria.fr"]
+authors: ["Frédéric Blanqui" "Quentin Buzet" "Quentin Garchery"]
+license: "CECILL-2.1"
+homepage: "https://github.com/fblanqui/lib"
+bug-reports: "https://github.com/fblanqui/lib/issues"
+dev-repo: "git+https://github.com/fblanqui/lib.git"
+install: [ make "install" ]
+uninstall: [ make "uninstall" ]
+depends: [
+  "lambdapi" {>= "2.2.1"}
+]
+url {
+  src:
+    "https://github.com/fblanqui/lib/archive/refs/tags/1.0.0.tar.gz"
+  checksum: [
+    "sha256=284cee1ee38e16d4bb7dd99027a187f54731d246f4b60736f8cb46ecfacf4c38"
+    "sha512=5415a2d5d5bf1e1f0547865d7c7a85e754a9e1c26ef5ca2e782eeb06ca9358635f0c47688b09fe66dfe7ac898449ea7a685e566d86f1e39b8d583be99c00f40b"
+  ]
+}
