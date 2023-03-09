@@ -6,7 +6,7 @@ Requires [Opam](https://opam.ocaml.org/).
 To add this repository in your Opam environment, do once:
 
 ```bash
-opam repository --set-default add lambdapi https://github.com/deducteam/opam-lambdapi-repository.git
+opam repository -a add lambdapi https://github.com/deducteam/opam-lambdapi-repository.git
 ```
 
 To search available Lambdapi libraries, do:
