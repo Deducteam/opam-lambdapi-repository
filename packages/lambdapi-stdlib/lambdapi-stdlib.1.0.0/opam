@@ -27,7 +27,7 @@ url {
   src:
     "https://github.com/Deducteam/lambdapi-stdlib/archive/refs/tags/1.0.0.tar.gz"
   checksum: [
-    "sha256=29e30f0c8a2d2b5193d2ef6076d3b4bda4f07be4ef36b0e68fba1283a4f1cc39"
-    "sha512=877fcc23c19e1bad7d2505ee060a619bd838047e1e0173c9c24fbfe9b733622c632332f6c9d819e161946ee4269f0b55074a81bac2c37e3937321b967e85a269"
+    "sha256=5b616622c00a7c7b4e9120a638ecfbb45c77c5926f3cb8d825ee7bdd97d0b5c5"
+    "sha512=c079e5583f1fbae2bb8373d9943f48389b5ef6e8cd83b8d44e4eda2b6cfbc83ad32025dc0d5cf13ee0da5735e6b2e77c53d8773ee1acfbdcae0e527b09cb15be"
   ]
 }
