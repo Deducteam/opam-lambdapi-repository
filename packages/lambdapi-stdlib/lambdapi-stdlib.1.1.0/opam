@@ -1,0 +1,36 @@
+opam-version: "2.0"
+synopsis: "Standard library of Lambdapi"
+description: """
+This package provides a Lambdapi library on natural numbers,
+integers and polymorphic lists (in intuitionistic first-order logic).
+It provides the following modules:
+- Stdlib.Set: type of set codes
+- Stdlib.Prop: propositional logic
+- Stdlib.Eq: Leibniz equality
+- Stdlib.FOL: first-order logic
+- Stdlib.Bool: booleans
+- Stdlib.Nat: natural numbers
+- Stdlib.List: polymorphic lists
+- Stdlib.Comp: comparison result data type
+- Stdlib.Pos: binary positive numbers
+- Stdlib.Z: integers
+"""
+maintainer: ["frederic.blanqui@inria.fr"]
+authors: ["Frédéric Blanqui" "Quentin Buzet" "Quentin Garchery"]
+license: "CECILL-2.1"
+homepage: "https://github.com/Deducteam/lambdapi-stdlib"
+bug-reports: "https://github.com/Deducteam/lambdapi-stdlib/issues"
+dev-repo: "git+https://github.com/Deducteam/lambdapi-stdlib.git"
+install: [ make "install" ]
+uninstall: [ make "uninstall" ]
+depends: [
+  "lambdapi" {>= "2.3.0"}
+]
+url {
+  src:
+    "https://github.com/Deducteam/lambdapi-stdlib/archive/refs/tags/1.1.0.tar.gz"
+  checksum: [
+    "sha256=ddd9c0c71d54f5f6512370f9d2dc719f17df648b3e1718a76375a68830c7f8d1"
+    "sha512=8cbe5f151638f0866bb23061b6a7b1b56b87fc79a4543dab6ee67750b58253eead75b97ec80cb4f8500996827efc3533728e67591a2420e4570244fa32d05858"
+  ]
+}
