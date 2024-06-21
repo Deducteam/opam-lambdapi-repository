@@ -19,8 +19,8 @@ license: "CECILL-2.1"
 homepage: "https://github.com/fblanqui/lib"
 bug-reports: "https://github.com/fblanqui/lib/issues"
 dev-repo: "git+https://github.com/fblanqui/lib.git"
+build: [ make ]
 install: [ make "install" ]
-remove: [ make "uninstall" ]
 depends: [
   "lambdapi" {>= "2.0.0"}
 ]
