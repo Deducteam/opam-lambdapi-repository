@@ -19,7 +19,7 @@ url {
   src:
     "https://github.com/Deducteam/lambdapi-zenon/archive/refs/tags/0.0.0.tar.gz"
   checksum: [
-    "sha256=281a15bd4ea919edaaaba6f0b53a93ffc2c36342ab050c76e34a2d2c67973c06"
-    "sha512=433ea786c774c1e756ad37ad1a95eca283179af523e4b75d6fb57591dfc9f7b8a2508ff1d706a226e2a682dfce8c3348926ce8bcd62e0977fee2e5bde9479ed6"
+    "sha256=90e18b88e555b3274a0d0282ddce4f52136e26188f3bc01c8351bbe160ae7f37"
+    "sha512=321b3f87a35f490998454debef038b9b29f77c5fdeb439fe32d9641da1e0a3fab8f332d06cccacc8138581a61117ff348a315710f854eec06f60c655df38301a"
   ]
 }
