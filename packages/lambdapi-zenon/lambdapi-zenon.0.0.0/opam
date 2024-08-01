@@ -15,11 +15,11 @@ depends: [
   "lambdapi" {>= "2.3.0"}
   "lambdapi-stdlib" {>= "1.1.0"}
 ]
-url {
+rl {
   src:
     "https://github.com/Deducteam/lambdapi-zenon/archive/refs/tags/0.0.0.tar.gz"
   checksum: [
-    "sha256=281a15bd4ea919edaaaba6f0b53a93ffc2c36342ab050c76e34a2d2c67973c06"
-    "sha512=433ea786c774c1e756ad37ad1a95eca283179af523e4b75d6fb57591dfc9f7b8a2508ff1d706a226e2a682dfce8c3348926ce8bcd62e0977fee2e5bde9479ed6"
+    "sha256=71ea1d8b925370d3f78ea6833ba79377e51e6b7aa1386d434032d92dac75f65e"
+    "sha512=d3f0f40e815318306e5b74a130c38bb72d8b15974ba7bbd4e4ec48494f59b80e5e9709f1e24bfb1bce996abf27fb8df54ec05a35bb7c49996a98e57af75b7e75"
   ]
 }
