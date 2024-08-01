@@ -15,7 +15,7 @@ depends: [
   "lambdapi" {>= "2.3.0"}
   "lambdapi-stdlib" {>= "1.1.0"}
 ]
-rl {
+url {
   src:
     "https://github.com/Deducteam/lambdapi-zenon/archive/refs/tags/0.0.0.tar.gz"
   checksum: [
