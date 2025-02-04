@@ -1,0 +1,25 @@
+opam-version: "2.0"
+synopsis: "Standard library of Lambdapi"
+description: """
+This package contains various modules providing definitions and basic
+properties of various logics, natural numbers, integers and polymorphic lists.
+"""
+maintainer: ["frederic.blanqui@inria.fr"]
+authors: ["Frédéric Blanqui" "Quentin Buzet" "Quentin Garchery"]
+license: "CECILL-2.1"
+homepage: "https://github.com/Deducteam/lambdapi-stdlib"
+bug-reports: "https://github.com/Deducteam/lambdapi-stdlib/issues"
+dev-repo: "git+https://github.com/Deducteam/lambdapi-stdlib.git"
+build: [ make ]
+install: [ make "install" ]
+depends: [
+  "lambdapi" {>= "2.6.0"}
+]
+url {
+  src:
+    "https://github.com/Deducteam/lambdapi-stdlib/archive/refs/tags/1.2.0.tar.gz"
+  checksum: [
+    "sha256=bfc2fdbc5801c29f78bb3ceaa634950178d2a86bc6dc293a42493b5a5b578cd2"
+    "sha512=9effc0b2125fa8f96c822934d3a95459f51b6c8a1ae6cb9adf4442ef1324ef008b9ccb03e10721746e9e64e31594369ba23006b55c80de9ea232387565084c48"
+  ]
+}
