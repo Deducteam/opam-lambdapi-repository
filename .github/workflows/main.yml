@@ -38,3 +38,46 @@ jobs:
         run: |
           echo "installing ${{ matrix.bin }}"
           opam install -y --deps-only "${{ matrix.bin }}"
+
+  install-library-from-master:
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: setting up opam
+        uses: ocaml/setup-ocaml@v3
+        with:
+        # It would be nice to compute the latest version of ocaml that is supported by ${{ matrix.lib }} 
+        # A first approximation could be to use version 5.3.0 if there is ANY upper bound constraint on the library. Lastest if none.
+        # Problem : the lib could support a more recent version. 
+
+        # Another option would be to use a script that dry runs opam install the lib with different versions of ocaml and pick the latest version that is supported :
+        #   for v in $(VERSIONS); do \
+  #           if opam install $$lib ocaml-base-compiler.$$v --dry-run >/dev/null 2>&1; then \
+  #             echo "{\"lib\":\"$$lib\",\"version\":\"$$v\"}" >> $$tmp; \
+  #           fi; \
+  #          done; \
+          ocaml-compiler: 5.3.0
+      - name: install dependencies from master
+      # If there is ANY upper bound constraint on deps versions. This means the library wont work woth "latest" (master) version of this dependency
+      # The drawback is that if the lib depends on more than one library but there is a upper bound constraint on one dependency version (which is not the case so long),
+      # the pipeline will not test the installation of the library with the master version of the second dependency on which there exist no upper bound condition
+      # To overcome this, the pipeline should extract the dependencies together with version constraints of each library one on one and install it accordingly
+      # The pipeline also tests the installation of the library with the master version of lambdapi. This should probaly
+        # ${{ matrix.deps_install == 'from_master' }} \
+#        if: $(cat {{matrix.lib}}/opam | grep '<=')
+        run: |
+          git clone https://github.com/Deducteam/lambdapi.git
+          cd lambdapi
+          opam install --deps-only .
+          eval $(opam env)
+          opam install -y .
+          cd ..
+          opam repository -a --set-default add lambdapi .
+      - name: install library ${{ matrix.bin }} 
+        run: |
+          echo "installing ${{ matrix.bin }}"
+          opam install -y --deps-only "${{ matrix.bin }}"
