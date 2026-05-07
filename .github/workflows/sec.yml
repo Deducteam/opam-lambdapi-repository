@@ -1,0 +1,40 @@
+on:
+  push:
+
+jobs:
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: set
+        run: |
+          files=$(find packages -type f -name "opam" -exec dirname {} \;)
+          json=$(printf '%s' "$files" | jq -R . | jq -s '{include: map({ bin: .})}')
+          {
+            echo "matrix<<EOF"
+            echo "$json"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+  install-library:
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: setting up opam
+        run: |
+          sudo apt-get install -y opam
+          opam init
+      - name: selecting ocaml version
+        run: |
+          if opam install ${{ matrix.bin }} --dry-run --switch=ocaml.3.5.0; then
+            echo "ocaml.3.5.0 is compatible with " ${{ matrix.bin }}
+            echo "ocamlVersion=ocaml.3.5.0" >> $GITHUB_OUTPUT
+          fi
+
