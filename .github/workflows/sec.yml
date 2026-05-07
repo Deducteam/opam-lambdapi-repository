@@ -33,8 +33,39 @@ jobs:
           opam init
       - name: selecting ocaml version
         run: |
-          if opam install ${{ matrix.bin }} --dry-run --switch=ocaml.3.5.0; then
+          if opam install -y ${{ matrix.bin }} --dry-run --switch=ocaml.3.5.0; then
             echo "ocaml.3.5.0 is compatible with " ${{ matrix.bin }}
             echo "ocamlVersion=ocaml.3.5.0" >> $GITHUB_OUTPUT
+          else
+            echo "ocaml.3.5.0 is not compatible with " ${{ matrix.bin }}
           fi
 
+      - name: selecting ocaml version
+        run: |
+          if opam install -y ${{ matrix.bin }} --dry-run --switch=ocaml.5.4.1; then
+            echo "ocaml.5.4.1 is compatible with " ${{ matrix.bin }}
+            echo "ocamlVersion=ocaml.5.4.1" >> $GITHUB_OUTPUT
+          else
+            echo "ocaml.5.4.1 is not compatible with " ${{ matrix.bin }}
+          fi
+
+  install-library-from-opam-repo:
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: setting up opam
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: 5.4.1
+      - name: install dependencies from opam
+        run: |
+          opam repository -a --set-default add lambdapi https://github.com/deducteam/opam-lambdapi-repository.git
+
+      - name: install library ${{ matrix.bin }} 
+        run: |
+          echo "installing ${{ matrix.bin }}"
+          opam install -y --deps-only "${{ matrix.bin }}"
