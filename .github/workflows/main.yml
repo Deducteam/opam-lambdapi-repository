@@ -1,0 +1,55 @@
+on:
+  push:
+
+jobs:
+  generate-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ocaml_version: [5.3.0]
+        deps_install: [from_master,from_opam]
+    outputs:
+      matrix: ${{ steps.set.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: set
+        run: |
+          files=$(find packages -type f -name "opam" -exec dirname {} \;)
+          json=$(printf '%s' "$files" | jq -R . | jq -s '{include: map({deps_install: "${{matrix.deps_install}}", lib: ., ocaml_version: "${{matrix.ocaml_version}}"})}')
+          {
+            echo "matrix<<EOF"
+            echo "$json"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+  install-library:
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: setting up opam
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: ${{ matrix.ocaml_version }}
+      - name: install dependencies from master
+        if: ${{ matrix.deps_install == 'from_master' }}
+        run: |
+          git clone https://github.com/Deducteam/lambdapi.git
+          cd lambdapi
+          opam install --deps-only .
+          eval $(opam env)
+          opam install -y .
+          cd ..
+          opam repository -a --set-default add lambdapi .
+      - name: install dependencies from opam
+        if: ${{ matrix.deps_install == 'from_opam' }}
+        run: |
+          opam repository -a --set-default add lambdapi https://github.com/deducteam/opam-lambdapi-repository.git
+
+      - name: install library ${{ matrix.lib }} 
+        run: |
+          echo "installing ${{ matrix.lib }}"
+          opam install -y --deps-only "${{ matrix.lib }}"
