@@ -18,7 +18,7 @@ jobs:
             echo "EOF"
           } >> $GITHUB_OUTPUT
 
-  install-library:
+  install-library-from-opam-repo:
     needs: generate-matrix
     runs-on: ubuntu-latest
     strategy:
@@ -61,14 +61,24 @@ jobs:
   #           fi; \
   #          done; \
           ocaml-compiler: 5.3.0
-      - name: install dependencies from master
-      # If there is ANY upper bound constraint on deps versions. This means the library wont work woth "latest" (master) version of this dependency
-      # The drawback is that if the lib depends on more than one library but there is a upper bound constraint on one dependency version (which is not the case so long),
-      # the pipeline will not test the installation of the library with the master version of the second dependency on which there exist no upper bound condition
-      # To overcome this, the pipeline should extract the dependencies together with version constraints of each library one on one and install it accordingly
-      # The pipeline also tests the installation of the library with the master version of lambdapi. This should probaly
-        # ${{ matrix.deps_install == 'from_master' }} \
-#        if: $(cat {{matrix.lib}}/opam | grep '<=')
+      - name: check compatibility with LP master version
+        id: check
+        # This should probably moved to a different workflow !!!
+        # To pick the right version of Lambdapi (master or another version)
+        # We first test whether the package has a upper bound constraint on some Lambdapi dependency (whether Lambdapi or just another LP library. We assume other dependencies do not impact LP version).
+        # If this is the case, this means the lib will (proobably) not work with the latest (master) version 
+        # of Lambdapi (whether the constraints is related to Lambdapi directly or indirecttly)
+        # So, the right version of Lambdapi is installed from the Opam repository (In the future, this should probably be the unique way to install Lambdapi
+        # and the above should be moved to a dedicated workflow)
+
+        # For the "internal" dependencies (meaning other LP libraries in the current repo) installation is always made from the local repo with Opam managing versions
+        run: |
+          if ! grep -q "lambdapi.*<=" ${{ matrix.bin }}/opam; then
+            echo "compatibleWithLambdapiMaster=true" >> $GITHUB_OUTPUT
+          fi
+      - name: install Lambdapi from master
+      # If compatibleWithLambdapiMaster then install from LP github repo. Otherwise, clone and install from Opam repo
+        if: steps.check.outputs.compatibleWithLambdapiMaster == 'true'
         run: |
           git clone https://github.com/Deducteam/lambdapi.git
           cd lambdapi
@@ -76,6 +86,8 @@ jobs:
           eval $(opam env)
           opam install -y .
           cd ..
+      - name: install dependencies from master
+        run: |
           opam repository -a --set-default add lambdapi .
       - name: install library ${{ matrix.bin }} 
         run: |
