@@ -8,15 +8,76 @@ jobs:
       matrix: ${{ steps.set.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
+      - name: setting up opam
+        run: |
+          sudo apt-get install -y opam
+          opam init
+          opam --version
+          opam switch list-available ocaml-base-compiler
+      - name: install ocaml switchs
+        run: |
+          opam switch create 5.4.1
+          # opam switch create 5.4.0
+          # opam switch create 5.3.0
+          opam switch create 4.11.0
       - id: set
         run: |
-          files=$(find packages -type f -name "opam" -exec dirname {} \;)
-          json=$(printf '%s' "$files" | jq -R . | jq -s '{include: map({ bin: .})}')
-          {
-            echo "matrix<<EOF"
-            echo "$json"
-            echo "EOF"
-          } >> $GITHUB_OUTPUT
+          set -euo pipefail
+        
+          OCAML_VERSIONS=(
+            5.4.1
+            # 5.4.0
+            # 5.3.0
+            4.11.0
+          )
+        
+          check_pkg () {
+            local pkgdir="$1"
+            local compiler="$2"
+        
+            opam install -y ./"$pkgdir" \
+              --dry-run \
+              --deps-only \
+              --with-test \
+              --switch=$compiler \
+              # >/dev/null 2>&1
+          }
+        
+          matrix='[]'
+        
+          while IFS= read -r pkgdir; do
+            found=""
+        
+            for ver in "${OCAML_VERSIONS[@]}"; do
+              echo "Cheking compatibility of lib " $pkgdir "with ocaml version " $ver
+              if check_pkg "$pkgdir" "$ver"; then
+                echo $pkgdir "is compatible with ocaml version " $ver
+                found="$ver"
+                break
+              fi
+            done
+        
+            if [ -n "$found" ]; then
+              matrix=$(jq \
+                --arg bin "$pkgdir" \
+                --arg ocaml "$found" \
+                '. + [{bin:$bin, "ocaml-version":$ocaml}]' \
+                <<< "$matrix")
+            else
+              echo "No compatible compiler found for $pkgdir"
+              exit 1
+            fi
+          done < <(find packages -type f -name opam -exec dirname {} \;)
+        
+          json=$(jq -n --argjson include "$matrix" '{include:$include}')
+          
+            {
+              echo "matrix<<EOF"
+              echo "$json"
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+          
+
 
   install-library:
     needs: generate-matrix
@@ -60,7 +121,7 @@ jobs:
       - name: setting up opam
         uses: ocaml/setup-ocaml@v3
         with:
-          ocaml-compiler: 5.4.1
+          ocaml-compiler: 5.3.0
       - name: install dependencies from opam
         run: |
           opam repository -a --set-default add lambdapi https://github.com/deducteam/opam-lambdapi-repository.git
