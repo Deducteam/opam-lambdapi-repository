@@ -1,68 +1,26 @@
+name: test packages
+
 on:
-  push:
+  push
 
 jobs:
-  generate-matrix:
+  get-changed-files:
     runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set.outputs.matrix }}
+
     steps:
-      - name: setting up opam
-        uses: ocaml/setup-ocaml@v3
-        with:
-          ocaml-compiler: 5.3.0
-      - uses: actions/checkout@v4
-      - name: Get changed opam files
-        id: changed-opam-files
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get changed files
+        id: changed-files
         uses: tj-actions/changed-files@v45
         with:
           files: |
-            packages/**/*.opam
-      - id: set
+            packages/**/opam
+      - name: Display changed files
         run: |
-          modifiedPkgs=$(
-          for file in ${{ steps.changed-opam-files.outputs.all_changed_files }}; do
+          echo "Fichiers modifiés :"
+
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             echo "$file"
-          done \
-          | cut -d/ -f2 \
-          | sort -u
-          )
-          # FIX ME
-          modifiedPkg=${modifiedPkgs%% *}
-          impacted_packages=$(opam list --recursive --depends-on="$$modifiedpkg" --short)
-          # FIX ME
-          impacted_package=${impacted_packages%% *}
-          packages=$(find packages/"$impacted_package" -type f -name opam -exec dirname {} \;)
-
-          json=$(printf '%s' "$packages" | jq -R . | jq -s '{include: map({ bin: .})}')
-          {
-            echo "matrix<<EOF"
-            echo "$json"
-            echo "EOF"
-          } >> $GITHUB_OUTPUT
-
-  install-dependent-libraries:
-    needs: generate-matrix
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: setting up opam
-        uses: ocaml/setup-ocaml@v3
-        with:
-          ocaml-compiler: 5.3.0
-      - name: install dependencies from master
-        run: |
-          opam repository -a --set-default add lambdapi .
-      - name: install library ${{ matrix.bin }} 
-        run: |
-          echo "installing ${{ matrix.bin }}"
-          if opam install -y --deps-only "${{ matrix.bin }}"; then
-            echo "library installed succefuly!"
-            #One does not know in advance which libraries will be tested (very old Q may depend on recent package P)          else
-            opam switch create 4.11.0
-            opam install -y --deps-only "${{ matrix.bin }}" --switch=4.11.0
-          fi
-
+          done
