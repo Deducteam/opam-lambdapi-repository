@@ -53,7 +53,7 @@ jobs:
 
   install-libraires:
     needs: get-changed-files
-    if: ! needs.get-changed-files.outputs.has-items == 'true'
+    # if: ! needs.get-changed-files.outputs.has-items == 'true'
     runs-on: ubuntu-lates
     strategy:
       fail-fast: false
