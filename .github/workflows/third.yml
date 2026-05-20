@@ -66,4 +66,5 @@ jobs:
         run: |
           echo "installing ${{ matrix.bin }}"
           opam install -y --deps-only "${{ matrix.bin }}"
+          echo "done"
 
