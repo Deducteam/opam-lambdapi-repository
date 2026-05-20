@@ -45,7 +45,6 @@ jobs:
           fi
 
           json=$(printf '%s' "$modifiedPkgs" | jq -R . | jq -s '{include: map({ bin: .})}')
-          # json=$(printf '%s' "$modifiedPkgs" | jq -R . | jq -s '{include: map({ bin: .}), "has-items": 'true'}')
           {
             echo "matrix<<EOF"
             echo "$json"
