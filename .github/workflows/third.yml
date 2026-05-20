@@ -38,12 +38,6 @@ jobs:
             echo  pkg $file has been modified
           done
 
-          if [ "$modifiedPkgs" = "[]" ]; then
-            echo "has-items=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "has-items=true" >> "$GITHUB_OUTPUT"
-          fi
-
           json=$(printf '%s' "$modifiedPkgs" | jq -R . | jq -s '{include: map({ bin: ., has_items: true})}')
           # json=$(printf '%s' "$modifiedPkgs" | jq -R . | jq -s '{include: map({ bin: .}), has_items: true}')
           {
@@ -54,7 +48,7 @@ jobs:
 
   install-libraires:
     needs: get-changed-files
-    if: needs.get-changed-files.outputs.matrix.has-items == 'true'
+    if: ! needs.get-changed-files.outputs.matrix.has-items == 'false'
     runs-on: ubuntu-lates
     strategy:
       fail-fast: false
