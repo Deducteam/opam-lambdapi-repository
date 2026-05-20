@@ -29,7 +29,7 @@ jobs:
           
           modifiedPkgs=$(
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            pkg=$(basename "$(dirname "$(dirname $file)")")
+            pkg=$(basename "$(dirname $file)")
             echo $pkg
           done
           )
@@ -57,18 +57,18 @@ jobs:
       - name: check has_items
         run: |
           echo ${{needs.get-changed-files.outputs.matrix.has_items}}
-      - uses: actions/checkout@v4
-      - name: setting up opam
-        uses: ocaml/setup-ocaml@v3
-        with:
-          ocaml-compiler: 5.3.0
-      - name: setup repository
-        run: |
-          opam repository -a --set-default add lambdapi .
-      - name: install library ${{ matrix.bin }} 
-        run: |
-          echo "installing ${{ matrix.bin }}"
-          opam install -y --deps-only "${{ matrix.bin }}"
-          echo "done"
-          
+      # - uses: actions/checkout@v4
+      # - name: setting up opam
+      #   uses: ocaml/setup-ocaml@v3
+      #   with:
+      #     ocaml-compiler: 5.3.0
+      # - name: setup repository
+      #   run: |
+      #     opam repository -a --set-default add lambdapi .
+      # - name: install library ${{ matrix.bin }} 
+      #   run: |
+      #     echo "installing ${{ matrix.bin }}"
+      #     opam install -y --deps-only "${{ matrix.bin }}"
+      #     echo "done"
+
 
