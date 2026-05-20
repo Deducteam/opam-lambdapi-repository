@@ -19,7 +19,6 @@ jobs:
         #     packages/**/opam
       - name: Display changed files
         run: |
-          )
           echo "Fichiers modifiés :"
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do   
             echo "$file"
@@ -30,6 +29,7 @@ jobs:
             pkg=$(basename "$(dirname "$(dirname $file)")")
             echo $pkg
           done
+          )
 
           for file in $modifiedPkgs; do
             echo  pkg $file has been modified
