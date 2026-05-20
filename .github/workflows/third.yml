@@ -45,18 +45,24 @@ jobs:
             echo "$json"
             echo "EOF"
           } >> $GITHUB_OUTPUT
-
-  install-libraires:
+  another_job:
     needs: get-changed-files
-    # if: ${{needs.get-changed-files.outputs.matrix.has_items}} == 'true'
     runs-on: ubuntu-lates
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJson(needs.get-changed-files.outputs.matrix) }}
     steps:
-      - name: check has_items
-        run: |
-          echo ${{needs.get-changed-files.outputs.matrix.has_items}}
+      - name: print
+        run: pwd
+
+  # install-libraires:
+  #   needs: get-changed-files
+  #   # if: ${{needs.get-changed-files.outputs.matrix.has_items}} == 'true'
+  #   runs-on: ubuntu-lates
+  #   strategy:
+  #     fail-fast: false
+  #     matrix: ${{ fromJson(needs.get-changed-files.outputs.matrix) }}
+  #   steps:
+  #     - name: check has_items
+  #       run: |
+  #         echo ${{needs.get-changed-files.outputs.matrix.has_items}}
       # - uses: actions/checkout@v4
       # - name: setting up opam
       #   uses: ocaml/setup-ocaml@v3
