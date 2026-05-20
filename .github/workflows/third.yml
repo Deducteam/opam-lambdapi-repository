@@ -14,13 +14,19 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v45
-        with:
-          files: |
-            packages/**/opam
+        # with:
+        #   files: |
+        #     packages/**/opam
       - name: Display changed files
         run: |
           echo "Fichiers modifiés :"
-
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do   
             echo "$file"
           done
+      - id: set
+        run: |
+          modifiedPkgs=$(
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            pkg=$(basename "$(dirname "$(dirname $file)")")
+            echo package name is: $pkg
+          )
