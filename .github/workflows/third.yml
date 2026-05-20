@@ -44,7 +44,8 @@ jobs:
             echo "has-items=true" >> "$GITHUB_OUTPUT"
           fi
 
-          json=$(printf '%s' "$modifiedPkgs" | jq -R . | jq -s '{include: map({ bin: .}), has_items: true}')
+          json=$(printf '%s' "$modifiedPkgs" | jq -R . | jq -s '{include: map({ bin: .})}')
+          # json=$(printf '%s' "$modifiedPkgs" | jq -R . | jq -s '{include: map({ bin: .}), has_items: true}')
           {
             echo "matrix<<EOF"
             echo "$json"
