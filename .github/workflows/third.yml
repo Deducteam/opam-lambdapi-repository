@@ -49,24 +49,24 @@ jobs:
           } >> $GITHUB_OUTPUT
 
   install-libraires:
-    # needs: get-changed-files
-    runs-on: ubuntu-lates
+    needs: get-changed-files
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      # matrix: ${{ fromJson(needs.get-changed-files.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.get-changed-files.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
-  #     - name: setting up opam
-  #       uses: ocaml/setup-ocaml@v3
-  #       with:
-  #         ocaml-compiler: 5.3.0
-  #     - name: setup repository
-  #       run: |
-  #         opam repository -a --set-default add lambdapi .
-  #     - name: install library ${{ matrix.bin }} 
-  #       run: |
-  #         echo "installing ${{ matrix.bin }}"
-  #         opam install -y --deps-only "${{ matrix.bin }}"
-  #         echo "done"
+      - name: setting up opam
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: 5.3.0
+      - name: setup repository
+        run: |
+          opam repository -a --set-default add lambdapi .
+      - name: install library ${{ matrix.bin }} 
+        run: |
+          echo "installing ${{ matrix.bin }}"
+          opam install -y --deps-only "${{ matrix.bin }}"
+          echo "done"
 
 
