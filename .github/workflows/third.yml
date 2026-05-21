@@ -1,7 +1,9 @@
 name: test packages
 
 on:
-  push
+  push:
+    paths:
+      - 'packages/**/opam'
 
 jobs:
   get-changed-files:
@@ -38,43 +40,36 @@ jobs:
             echo  pkg $file has been modified
           done
 
-          json=$(printf '%s' "$modifiedPkgs" | jq -R . | jq -s '{include: map({ bin: ., has_items: true})}')
+          json=$(printf '%s' "$modifiedPkgs" | jq -R . | jq -s '{include: map({ bin: .})}')
           # json=$(printf '%s' "$modifiedPkgs" | jq -R . | jq -s '{include: map({ bin: .}), has_items: true}')
           {
             echo "matrix<<EOF"
             echo "$json"
             echo "EOF"
           } >> $GITHUB_OUTPUT
-  another_job:
+
+  install-libraires:
     needs: get-changed-files
     runs-on: ubuntu-lates
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.get-changed-files.outputs.matrix) }}
     steps:
-      - name: print
-        run: pwd
-
-  # install-libraires:
-  #   needs: get-changed-files
-  #   # if: ${{needs.get-changed-files.outputs.matrix.has_items}} == 'true'
-  #   runs-on: ubuntu-lates
-  #   strategy:
-  #     fail-fast: false
-  #     matrix: ${{ fromJson(needs.get-changed-files.outputs.matrix) }}
-  #   steps:
-  #     - name: check has_items
-  #       run: |
-  #         echo ${{needs.get-changed-files.outputs.matrix.has_items}}
-      # - uses: actions/checkout@v4
-      # - name: setting up opam
-      #   uses: ocaml/setup-ocaml@v3
-      #   with:
-      #     ocaml-compiler: 5.3.0
-      # - name: setup repository
-      #   run: |
-      #     opam repository -a --set-default add lambdapi .
-      # - name: install library ${{ matrix.bin }} 
-      #   run: |
-      #     echo "installing ${{ matrix.bin }}"
-      #     opam install -y --deps-only "${{ matrix.bin }}"
-      #     echo "done"
+      - name: check has_items
+        run: |
+          echo ${{needs.get-changed-files.outputs.matrix.has_items}}
+      - uses: actions/checkout@v4
+      - name: setting up opam
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: 5.3.0
+      - name: setup repository
+        run: |
+          opam repository -a --set-default add lambdapi .
+      - name: install library ${{ matrix.bin }} 
+        run: |
+          echo "installing ${{ matrix.bin }}"
+          opam install -y --deps-only "${{ matrix.bin }}"
+          echo "done"
 
 
