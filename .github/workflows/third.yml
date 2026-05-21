@@ -24,24 +24,20 @@ jobs:
       - name: Display changed files
         id: set
         run: |
+          modifiedFiles=${{ steps.changed-files.outputs.all_changed_files }}
           echo "Fichiers modifiés :"
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do   
+          for file in $modifiedFiles; do   
             echo "$file"
           done
           
           modifiedPkgs=$(
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          for file in $modifiedFiles; do
             pkg=$(basename "$(dirname $file)")
             echo $pkg
           done
           )
 
-          # for file in $modifiedPkgs; do
-          #   echo  pkg $file has been modified
-          # done
-
-          json=$(printf '%s' "$modifiedPkgs" | jq -R . | jq -s '{include: map({ bin: .})}')
-          # json=$(printf '%s' "$modifiedPkgs" | jq -R . | jq -s '{include: map({ bin: .}), has_items: true}')
+          json=$(printf '%s' "$modifiedPkgs" | jq -R . | jq -s '{include: map({ lib: .})}')
           {
             echo "matrix<<EOF"
             echo "$json"
@@ -63,11 +59,17 @@ jobs:
       - name: setup repository
         run: |
           opam repository -a --set-default add lambdapi .
-      - name: install library ${{ matrix.bin }} 
+      - name: install library ${{ matrix.lib }} 
         run: |
-          echo "installing ${{ matrix.bin }}"
-          opam list lambdapi-stdlib
-          opam install -y ${{ matrix.bin }}
-          echo "done"
-
+          echo "installing ${{ matrix.lib }}"
+          opam install -y ${{ matrix.lib }}
+      # - name: install dependent libraries
+      #   run: |
+      #     deps=$(
+      #       opam list --depends-on $pkg --columns=name,version --short \
+      #       | awk '{print $1 "." $2}' \
+      #       | xargs
+      #       )
+      #     echo installing dependent packages : $deps
+      #     opam install -y deps
 
