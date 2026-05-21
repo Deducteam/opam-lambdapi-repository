@@ -66,6 +66,7 @@ jobs:
       - name: install library ${{ matrix.bin }} 
         run: |
           echo "installing ${{ matrix.bin }}"
+          opam list ${{ matrix.bin }}"
           opam install -y --deps-only "${{ matrix.bin }}"
           echo "done"
 
