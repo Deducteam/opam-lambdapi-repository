@@ -65,7 +65,7 @@ jobs:
           opam repository -a --set-default add lambdapi .
       - name: install library ${{ matrix.bin }} 
         run: |
-          echo "installing lambdapi-stdlib.0.0.0
+          echo "installing lambdapi-stdlib.0.0.0"
           opam list lambdapi-stdlib
           opam install -y --deps-only lambdapi-stdlib.0.0.0
           echo "done"
