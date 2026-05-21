@@ -63,13 +63,13 @@ jobs:
         run: |
           echo "installing ${{ matrix.lib }}"
           opam install -y ${{ matrix.lib }}
-      # - name: install dependent libraries
-      #   run: |
-      #     deps=$(
-      #       opam list --depends-on $pkg --columns=name,version --short \
-      #       | awk '{print $1 "." $2}' \
-      #       | xargs
-      #       )
-      #     echo installing dependent packages : $deps
-      #     opam install -y deps
+      - name: install dependent libraries
+        run: |
+          deps=$(
+            opam list --depends-on $pkg --columns=name,version --short \
+            | awk '{print $1 "." $2}' \
+            | xargs
+            )
+          echo installing dependent packages : $deps
+          opam install -y deps
 
