@@ -62,11 +62,12 @@ jobs:
           ocaml-compiler: 5.3.0
       - name: setup repository
         run: |
-          opam repository -a --set-default add lambdapi opam-lambdapi-repository
+          opam repository -a --set-default add lambdapi .
       - name: install library ${{ matrix.bin }} 
         run: |
-          echo "installing ${{ matrix.bin }}"
-          opam install -y --deps-only "${{ matrix.bin }}"
+          echo "installing lambdapi-stdlib.0.0.0
+          opam list lambdapi-stdlib
+          opam install -y --deps-only lambdapi-stdlib.0.0.0
           echo "done"
 
 
