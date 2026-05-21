@@ -36,9 +36,9 @@ jobs:
           done
           )
 
-          for file in $modifiedPkgs; do
-            echo  pkg $file has been modified
-          done
+          # for file in $modifiedPkgs; do
+          #   echo  pkg $file has been modified
+          # done
 
           json=$(printf '%s' "$modifiedPkgs" | jq -R . | jq -s '{include: map({ bin: .})}')
           # json=$(printf '%s' "$modifiedPkgs" | jq -R . | jq -s '{include: map({ bin: .}), has_items: true}')
@@ -65,9 +65,9 @@ jobs:
           opam repository -a --set-default add lambdapi .
       - name: install library ${{ matrix.bin }} 
         run: |
-          echo "installing lambdapi-stdlib.0.0.0"
+          echo "installing ${{ matrix.bin }}"
           opam list lambdapi-stdlib
-          opam install -y --deps-only lambdapi-stdlib.0.0.0
+          opam install -y --deps-only ${{ matrix.bin }}
           echo "done"
 
 
