@@ -67,7 +67,7 @@ jobs:
         run: |
           echo "installing ${{ matrix.bin }}"
           opam list lambdapi-stdlib
-          opam install -y --deps-only ${{ matrix.bin }}
+          opam install -y ${{ matrix.bin }}
           echo "done"
 
 
