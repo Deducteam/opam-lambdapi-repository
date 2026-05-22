@@ -65,11 +65,15 @@ jobs:
           opam install -y ${{ matrix.lib }}
       - name: install dependent libraries
         run: |
+          pkg=${{ matrix.lib }}
           deps=$(
             opam list --depends-on $pkg --columns=name,version --short \
             | awk '{print $1 "." $2}' \
             | xargs
-            )
-          echo installing dependent packages : $deps
-          opam install -y deps
-
+          )
+          if [ -n "$deps" ]; then
+            echo installing dependent packages : $deps
+            opam install -y $deps
+          else
+            echo No packages depending on $pkg
+          fi
