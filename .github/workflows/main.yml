@@ -4,6 +4,9 @@ on:
   push:
     paths:
       - 'packages/**/opam'
+  pull_request:
+    paths:
+      - 'packages/**/opam'
 
 jobs:
   get-changed-files:
