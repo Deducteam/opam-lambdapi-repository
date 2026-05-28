@@ -25,10 +25,9 @@ depends: [
   "lambdapi" {>= "2.0.0" & <= "2.5.1"}
 ]
 url {
-  src:
-    "https://github.com/fblanqui/lib/archive/refs/tags/0.0.0.tar.gz"
+  src: "https://github.com/fblanqui/lib/archive/refs/tags/0.0.0.tar.gz"
   checksum: [
-    "sha256=63e4f6428b98bd0368175f5503f9deb0426e2ee06a276127718666a5885aca9b"
-    "sha512=1129f5f8f0a2d80cb7f64eb7f21376374eb4a8bf1a8af482095757ed961dc8d7c408ceeecef42d8951e9525ab274ce3b523496d009adcf65736b128e7c4f352a"
+    "sha256=8c991d137b0046938039e5c74f26d979077fe9c6c84ffba6439e0649f4f03923"
+    "sha512=dd1a984821f4155feaf9465d35c34efbe29286d7f6d443b334e7e4ccc8bb7ed4cae8e2c2ad497f05cfeb6d99510e52ac158e7c83e5bf44d20070ef31fc09dfc1"
   ]
 }

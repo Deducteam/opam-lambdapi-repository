@@ -1,0 +1,82 @@
+name: test packages
+
+on:
+  push:
+    paths:
+      - 'packages/**/opam'
+  pull_request:
+    paths:
+      - 'packages/**/opam'
+
+jobs:
+  get-changed-files:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set.outputs.matrix }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            packages/**/opam
+      - name: Display changed files
+        id: set
+        run: |
+          modifiedFiles="${{ steps.changed-files.outputs.all_changed_files }}"
+          echo "Fichiers modifiés :"
+          for file in $modifiedFiles; do   
+            echo "$file"
+          done
+          
+          modifiedPkgs=$(
+          for file in $modifiedFiles; do
+            pkg=$(basename "$(dirname $file)")
+            echo $pkg
+          done
+          )
+
+          json=$(printf '%s' "$modifiedPkgs" | jq -R . | jq -s '{include: map({ lib: .})}')
+          {
+            echo "matrix<<EOF"
+            echo "$json"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+  install-libraires:
+    needs: get-changed-files
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.get-changed-files.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: setting up opam
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: 5.3.0
+      - name: setup repository
+        run: |
+          opam repository -a --set-default add lambdapi .
+      - name: install library ${{ matrix.lib }} 
+        run: |
+          echo "installing ${{ matrix.lib }}"
+          opam install -y ${{ matrix.lib }}
+      - name: install dependent libraries
+        run: |
+          pkg=${{ matrix.lib }}
+          deps=$(
+            opam list --color=never --depends-on $pkg --columns=name,version --short \
+            | awk '{print $1 "." $2}' \
+            | xargs
+          )
+          if [ -n "$deps" ]; then
+            echo installing dependent packages : $deps
+            opam install -y "$deps"
+          else
+            echo No packages depending on $pkg
+          fi
