@@ -12,8 +12,8 @@ dev-repo: "git+https://github.com/Deducteam/lambdapi-zenon.git"
 build: [ make ]
 install: [ make "install" ]
 depends: [
-  "lambdapi" {>= "2.3.0"}
-  "lambdapi-stdlib" {>= "1.1.0"}
+  "lambdapi" {>= "2.3.0" & <= "2.3.1"}
+  "lambdapi-stdlib" {= "1.1.0"}
 ]
 url {
   src:
