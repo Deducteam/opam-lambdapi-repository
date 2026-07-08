@@ -1,0 +1,25 @@
+opam-version: "2.0"
+synopsis: "Lambdapi logic used by the automated theorem prover ZenonModulo"
+description: """
+Lambdapi logic used by the automated theorem prover ZenonModulo
+"""
+maintainer: ["frederic.blanqui@inria.fr"]
+authors: ["Frédéric Blanqui"]
+license: "CECILL-2.1"
+homepage: "https://github.com/Deducteam/lambdapi-zenon"
+bug-reports: "https://github.com/Deducteam/lambdapi-zenon/issues"
+dev-repo: "git+https://github.com/Deducteam/lambdapi-zenon.git"
+build: [ make ]
+install: [ make "install" ]
+depends: [
+  "lambdapi" {>= "3.0.0"}
+  "lambdapi-stdlib" {>= "1.3.0"}
+]
+url {
+  src:
+    "https://github.com/Deducteam/lambdapi-zenon/archive/refs/tags/1.0.0.tar.gz"
+  checksum: [
+    "sha256=bda00c3319ed494804e2e5bace173842c460eaa8b483334f6f09984470ce7b6f"
+    "sha512=193bdc3efcb67316d7b0fc3e3f4b65c44edc98b42edf18652dc8fad0fc2b2a77d555038f359d29430f274b174d09356f9788adc605d7d1b9b27127a5a95c1b3c"
+  ]
+}
