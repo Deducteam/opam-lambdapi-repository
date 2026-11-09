@@ -16,7 +16,7 @@ install: [ make "install" ]
 depends: [
   "lambdapi" {>= "4.0.0"}
 ]
-rl {
+url {
   src:
     "https://github.com/Deducteam/lambdapi-stdlib/archive/refs/tags/2.0.0.tar.gz"
   checksum: [
