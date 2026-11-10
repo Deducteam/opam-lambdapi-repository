@@ -28,7 +28,7 @@ jobs:
         id: set
         run: |
           modifiedFiles="${{ steps.changed-files.outputs.all_changed_files }}"
-          echo "Files modified :"
+          echo "Modified files :"
           for file in $modifiedFiles; do   
             echo "$file"
           done
@@ -47,7 +47,7 @@ jobs:
             echo "EOF"
           } >> $GITHUB_OUTPUT
 
-  install-librairies:
+  install-libraries:
     needs: get-changed-files
     runs-on: ubuntu-latest
     strategy:
